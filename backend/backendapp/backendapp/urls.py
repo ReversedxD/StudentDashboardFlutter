@@ -22,5 +22,5 @@ urlpatterns = [
     path('home/', printHello),
     path('hello_django/', hello_django),
     path('users/', users),
-    path('results/', result)
+    path('result/<str:roll>', result)
 ]

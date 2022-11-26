@@ -1,4 +1,4 @@
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse, HttpRequest
 from json import dumps
 from django.shortcuts import render
 from .models import *
@@ -30,9 +30,9 @@ def users(request):
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
-def result(request):
+def result(request: HttpRequest, roll):
     response = []
-    results = Result.objects.all()
+    results = Result.objects.filter(user=roll).all()
     for result in results:
         response.append(model_to_dict(result))
     return JsonResponse(response,safe = False)
