@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:json_table/json_table.dart';
 
 void main() {
   runApp(const MyApp());
@@ -7,14 +10,13 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-  Future<http.Response> buttonPressed() async {
+  Future<List<dynamic>> buttonPressed() async {
     http.Response returnedResult = await http.get(
-        Uri.parse('http://localhost:8000/hello_django/'),
+        Uri.parse('http://localhost:8000/result/E20CSE302'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset-UTF-8'
         });
-    print(returnedResult.body);
-    return returnedResult;
+    return jsonDecode(returnedResult.body);
   }
 
   @override
@@ -33,15 +35,22 @@ class MyApp extends StatelessWidget {
           child: Column(
             children: [
               const Padding(
-                padding: EdgeInsets.all(0),
-                child: Text("Here is your result"),
+                padding: EdgeInsets.all(16),
+                child: Text("Here is your result for E20CSE302",
+                    style: TextStyle(fontSize: 20)),
               ),
-              Padding(
-                padding: EdgeInsets.all(0),
-                child: ElevatedButton(
-                  onPressed: buttonPressed,
-                  child: const Text("Hehe"),
-                ),
+              FutureBuilder<List<dynamic>>(
+                builder: ((context, snapshot) {
+                  if (snapshot.hasData) {
+                    return JsonTable(
+                      snapshot.data!,
+                      allowRowHighlight: true,
+                    );
+                  } else {
+                    return const CircularProgressIndicator();
+                  }
+                }),
+                future: buttonPressed(),
               )
             ],
           ),
