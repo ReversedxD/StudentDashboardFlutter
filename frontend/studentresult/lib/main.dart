@@ -19,6 +19,15 @@ class MyApp extends StatelessWidget {
     return jsonDecode(returnedResult.body);
   }
 
+  // Future<int> totalee() async {
+  //   http.Response returnedResult = await http.get(
+  //       Uri.parse('http://localhost:8000/totale/'),
+  //       headers: <String, String>{
+  //         'Content-Type': 'application/json; charset-UTF-8'
+  //       });
+  //   return jsonDecode(returnedResult.body);
+  // }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -51,7 +60,14 @@ class MyApp extends StatelessWidget {
                   }
                 }),
                 future: buttonPressed(),
-              )
+              ),
+              // Padding(
+              //   padding: EdgeInsets.all(10),
+              //   child: ElevatedButton(
+              //     onPressed: totalee,
+              //     child: Text("Here are your total marks"),
+              //   ),
+              // )
             ],
           ),
         ),

@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from django.forms.models import model_to_dict
 from rest_framework.permissions import AllowAny
 from rest_framework.decorators import api_view, permission_classes
+from django.db.models import Sum
 
 # Create your views here.
 
@@ -35,4 +36,10 @@ def result(request: HttpRequest, roll):
     results = Result.objects.filter(user=roll).all()
     for result in results:
         response.append(model_to_dict(result))
-    return JsonResponse(response,safe = False)
+    return JsonResponse(response, safe = False)
+
+# @api_view(['GET'])
+# @permission_classes([AllowAny])
+# def totalmarks(request):
+#     total = Result.objects.aggregate(Total = Sum('marks'))['Total']
+#     return Response(total)
