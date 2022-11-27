@@ -34,9 +34,10 @@ def users(request):
 def result(request: HttpRequest, roll):
     response = []
     results = Result.objects.filter(user=roll).all()
+    total_marks = Result.objects.filter(user=roll).aggregate(Total = Sum("marks"))['Total']
     for result in results:
         response.append(model_to_dict(result))
-    return JsonResponse(response, safe = False)
+    return JsonResponse({"subjects": response, "total_marks": total_marks}, safe = False)
 
 # @api_view(['GET'])
 # @permission_classes([AllowAny])
