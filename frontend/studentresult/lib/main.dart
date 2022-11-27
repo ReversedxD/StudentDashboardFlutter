@@ -10,7 +10,7 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-  Future<List<dynamic>> buttonPressed() async {
+  Future<Map<String, dynamic>> buttonPressed() async {
     http.Response returnedResult = await http.get(
         Uri.parse('http://localhost:8000/result/E20CSE302'),
         headers: <String, String>{
@@ -48,13 +48,28 @@ class MyApp extends StatelessWidget {
                 child: Text("Here is your result for E20CSE302",
                     style: TextStyle(fontSize: 20)),
               ),
-              FutureBuilder<List<dynamic>>(
+              FutureBuilder<Map<String, dynamic>>(
                 builder: ((context, snapshot) {
                   if (snapshot.hasData) {
-                    return JsonTable(
-                      snapshot.data!,
-                      allowRowHighlight: true,
-                    );
+                    return Expanded(
+                        child: ListView(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              "Total Marks: ${snapshot.data!['total_marks']}",
+                              style: const TextStyle(fontSize: 20),
+                            ),
+                          ),
+                        ),
+                        JsonTable(
+                          snapshot.data!["subjects"]!,
+                          allowRowHighlight: true,
+                        )
+                      ],
+                    ));
                   } else {
                     return const CircularProgressIndicator();
                   }
